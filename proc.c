@@ -98,19 +98,19 @@ found:
   }
   sp = p->kstack + KSTACKSIZE;
 
-  // Leave room for trap frame.
+  // Leave room for trap frame. trap frame 位于内核栈栈顶
   sp -= sizeof *p->tf;
   p->tf = (struct trapframe*)sp;
 
   // Set up new context to start executing at forkret,
   // which returns to trapret.
-  sp -= 4;
-  *(uint*)sp = (uint)trapret;
+  sp -= 4;  // 4 = sizeof(uint)
+  *(uint*)sp = (uint)trapret;  // 用于陷入返回的汇编函数
 
   sp -= sizeof *p->context;
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
-  p->context->eip = (uint)forkret;
+  p->context->eip = (uint)forkret;  // 进程恢复时先执行forkret，然后执行trapret
 
   return p;
 }
@@ -126,7 +126,7 @@ userinit(void)
   p = allocproc();
   
   initproc = p;
-  if((p->pgdir = setupkvm()) == 0)
+  if((p->pgdir = setupkvm()) == 0)  // 创建只映射内核区的页表
     panic("userinit: out of memory?");
   inituvm(p->pgdir, _binary_initcode_start, (int)_binary_initcode_size);
   p->sz = PGSIZE;

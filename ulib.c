@@ -40,6 +40,9 @@ memset(void *dst, int c, uint n)
   return dst;
 }
 
+/**
+ * 查找字符串s中首次出现字符c的位置
+ */
 char*
 strchr(const char *s, char c)
 {

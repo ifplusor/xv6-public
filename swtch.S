@@ -6,6 +6,8 @@
 # a struct context, and save its address in *old.
 # Switch stacks to new and pop previously-saved registers.
 
+# c函数调用：从右向左依次压入参数列表，call命令最后压入下一条指令地址
+# swtch返回时，切换到目标进程的内核线程中
 .globl swtch
 swtch:
   movl 4(%esp), %eax

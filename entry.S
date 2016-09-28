@@ -41,6 +41,7 @@ multiboot_header:
 _start = V2P_WO(entry)
 
 # Entering xv6 on boot processor, with paging off.
+# boot loader载入内核后从entry开始运行
 .globl entry
 entry:
   # Turn on page size extension for 4Mbyte pages
@@ -48,6 +49,7 @@ entry:
   orl     $(CR4_PSE), %eax
   movl    %eax, %cr4
   # Set page directory
+  # cr3-页目录基址寄存器, 通过V2P_WO宏将页表目录虚拟地址转换为物理地址
   movl    $(V2P_WO(entrypgdir)), %eax
   movl    %eax, %cr3
   # Turn on paging.

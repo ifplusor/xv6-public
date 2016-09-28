@@ -1,4 +1,4 @@
-// Mutual exclusion lock.
+// Mutual exclusion lock. 自旋锁
 struct spinlock {
   uint locked;       // Is the lock held?
 

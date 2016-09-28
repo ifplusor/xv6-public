@@ -23,6 +23,7 @@ alltraps:
   # Return falls through to trapret...
 .globl trapret
 trapret:
+  # 恢复用户态上下文，返回用户空间
   popal
   popl %gs
   popl %fs

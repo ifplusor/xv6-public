@@ -103,14 +103,14 @@ runcmd(struct cmd *cmd)
       panic("pipe");
     if(fork1() == 0){
       close(1);
-      dup(p[1]);
+      dup(p[1]);  // p[1]会被复制为文件描述符1
       close(p[0]);
       close(p[1]);
       runcmd(pcmd->left);
     }
     if(fork1() == 0){
       close(0);
-      dup(p[0]);
+      dup(p[0]);  // p[0]会被复制为文件描述符0
       close(p[0]);
       close(p[1]);
       runcmd(pcmd->right);
@@ -324,6 +324,9 @@ struct cmd *parsepipe(char**, char*);
 struct cmd *parseexec(char**, char*);
 struct cmd *nulterminate(struct cmd*);
 
+/**
+ * 解析命令
+ */
 struct cmd*
 parsecmd(char *s)
 {
